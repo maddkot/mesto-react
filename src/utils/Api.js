@@ -123,8 +123,10 @@
                 method: "PATCH",
                 headers: this.headers,
                 body: JSON.stringify({
-                    name: item.fullName,
-                    about: item.description
+                    /* name: item.fullName,
+                    about: item.description */
+                    name: item.name,
+                    about: item.about
                 })
             })
                 .then(res => {

@@ -1,14 +1,26 @@
 import React from 'react';
 
-function PopupWidthForm(props) {
+function PopupWidthForm({name, isOpen, isClose, method, nameForm, title, children, onSubmit}) {
     return (
-    <div className={`popup popup_${props.name} ${props.isOpen && 'popup_opened'}`}>
-      <div className="popup__container">
-        <button className="popup__close-button" type="button" aria-label="Close" onClick={props.isClose}>
+    <div 
+      className={`popup popup_${name} ${isOpen && 'popup_opened'}`}>
+        <div
+          className="popup__container">
+          <button
+            className="popup__close-button"
+            type="button"
+            aria-label="Close"
+            onClick={isClose}>
         </button>
-        <form className="popup__form" action="#" method={`${props.method}`} name={`${props.nameForm}`} noValidate>
-          <h3 className="popup__title">{props.title}</h3>
-          {props.children}
+          <form
+            onSubmit={onSubmit}
+            className="popup__form"
+            action="#"
+            method={`${method}`}
+            name={`${nameForm}`}
+            noValidate>
+          <h3 className="popup__title">{title}</h3>
+          {children}
         </form>
       </div>
     </div>

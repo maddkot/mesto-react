@@ -4,6 +4,9 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWidthForm from './PopupWithForm';
 import PopupImage from './PopupImage';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { apiData } from '../utils/Api';
+import EditProfilePopup from './EditProfilePopup';
 
 function App() {
 
@@ -34,46 +37,94 @@ function App() {
     handleCardClick('')
   }
 
+
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([])
+
+  React.useEffect(() => {
+    Promise.all([apiData.getUserInfo(), apiData.getInitialCards()])
+      .then(([userData, initialCards]) => {
+        setCurrentUser(userData)
+        setCards(initialCards) 
+      })   
+      .catch((error) => {
+        console.log(error);
+    })
+  }, [])
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    if (!isLiked) {
+      apiData.setLike(card._id)
+        .then((newCard) => {
+          const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+          setCards(newCards);
+        })
+        .catch((error) => {
+          console.log(error);
+      });
+    } else {
+      apiData.deleteLike(card._id)
+        .then((newCard) => {
+          const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+          setCards(newCards);
+        })
+        .catch((error) => {
+          console.log(error);
+      })
+    }
+  }
+
+  //происходит ошибка рендеринга. удаляеются все карточки, кроме удаляемой карточки 
+  function handleCardDelete(card) {
+      apiData.deleteCard(card._id)
+        .then(() => {
+          const NewCards = cards.filter((c) => c._id !== card._id );          
+          setCards(NewCards);
+        })
+        .catch((error) => {
+          console.log(error);
+      })
+  }
+
+  function handleUpdateUser(items) {
+      apiData.setUserInfo(items)
+        .then((res) => {
+          setCurrentUser(res)
+          closeAllPopups()
+        })
+        .catch((error) => {
+          console.log(error);
+      })
+    }
+    
+
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page">       
     
       <Header />
       <Main
+        cards={cards}    
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onCardClick={handleCardClick}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}  
       />
       <Footer />
     
       
 
-    <section className="popups">
-    <PopupWidthForm 
-          name='edit-profile'
-          title='Редактировать профиль'
-          nameForm='popup__form_edit-profile'
-          method="GET"
+    <section className="popups">  
+
+    <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          isClose ={closeAllPopups}
-          children={
-            <>
-          <div className="popup__inputs">
-            <input id="full-name-input" className="popup__input popup__input_full-name" type="text"
-              name="fullName" required placeholder="Введите имя" minLength="2" maxLength="40"
-              autoComplete="off" pattern="[А-Яа-я ёЁ A-Za-z -]{1,}"/>
-            <span id="full-name-input-error" className="popup__input-error"></span>
-            <input id="descriptions-input" className="popup__input popup__input_description" type="text"
-              name="description" required placeholder="Введите профессию" minLength="2" maxLength="200"
-              autoComplete="off"/>
-            <span id="descriptions-input-error" className="popup__input-error"></span>
-          </div>
-
-          <button className="popup__button-save popup__button-save_profile" type="submit" aria-label="Save">Сохранить</button>
-          </>
-          }
-    />
-
+          isClose={closeAllPopups}>
+          onUpdateUser={handleUpdateUser}  
+    </EditProfilePopup>
+          
     <PopupWidthForm
           name='add-form'
           title='Новое место'
@@ -134,7 +185,9 @@ function App() {
         
     </section>
 
-    </div>
+  </div>
+  </CurrentUserContext.Provider>
+      
   );
 }
 
