@@ -7,6 +7,8 @@ import PopupImage from './PopupImage';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { apiData } from '../utils/Api';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
 
@@ -36,6 +38,29 @@ function App() {
     setAddCard(false)
     handleCardClick('')
   }
+
+  function closeEscapePopup(event) {
+    if (event.key === 'Escape') {
+      closeAllPopups()
+    }
+  }
+
+  function closeOverlayPopup(event) {
+    if (event.target.classList.contains('popup')) {
+      closeAllPopups()
+    }
+  }
+
+  //тренажер.тема useEffect c mousemove
+  React.useEffect(() => {
+    document.addEventListener('keydown', closeEscapePopup);
+    document.addEventListener('click', closeOverlayPopup);
+    return () => {
+      document.removeEventListener('keydown', closeEscapePopup);
+      document.removeEventListener('click', closeOverlayPopup);
+    }
+
+  })
 
 
   const [currentUser, setCurrentUser] = React.useState({});
@@ -98,6 +123,28 @@ function App() {
       })
     }
     
+  
+  function handleUpdateAvatar(item) {
+      apiData.changeAvatar(item)
+        .then((res) => {
+          setCurrentUser(res)
+          closeAllPopups()
+        })
+        .catch((error) => {
+          console.log(error);
+      })  
+  }
+
+  function handleAddPlaceSubmit(item) {
+      apiData.addNewCard(item)
+        .then((res) => {
+          setCards([res, ...cards])
+          closeAllPopups()
+        })
+        .catch((error) => {
+          console.log(error);
+      })  
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -121,31 +168,24 @@ function App() {
 
     <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          isClose={closeAllPopups}>
-          onUpdateUser={handleUpdateUser}  
+          isClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          >  
     </EditProfilePopup>
           
-    <PopupWidthForm
-          name='add-form'
-          title='Новое место'
-          nameForm='popup__form_add-newCard'
-          method='GET'
+    <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          isClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}>   
+    </EditAvatarPopup>      
+          
+    <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
-          isClose ={closeAllPopups}
-          children={
-            <>
-            <div className="popup__inputs">
-              <input id="card-title-input" className="popup__input popup__input_title" type="text" name="title"
-              required placeholder="Название" minLength="1" maxLength="30" autoComplete="off"/>
-              <span id="card-title-input-error" className="popup__input-error"></span>
-              <input id="url-input" className="popup__input popup__input_url" type="url" name="url" required
-              placeholder="Cсылка на картинку (url)" autoComplete="off"/>
-              <span id="url-input-error" className="popup__input-error"></span>
-          </div>
-          <button className="popup__button-save popup__button-save_form_add" type="submit" aria-label="Save">Создать</button> 
-            </>  
-          }
-    />
+          isClose={closeAllPopups}
+          addNewCard={handleAddPlaceSubmit}  
+          >
+            
+    </AddPlacePopup>
 
     <PopupWidthForm
           name='delete-card'
@@ -160,23 +200,7 @@ function App() {
           }
     />
 
-    <PopupWidthForm
-          name='avatar'
-          title='Обновить аватар'
-          nameForm='popup__form_avatar'
-          method='GET'
-          isOpen={isEditAvatarPopupOpen}
-          isClose ={closeAllPopups}
-          children={
-            <>
-            <div className="popup__inputs">
-              <input id="avatar-input" className="popup__input popup__input_url" type="url" name="url" required placeholder="https://..." autoComplete="off"/>
-              <span id="avatar-input-error" className="popup__input-error"></span>
-            </div>
-            <button className="popup__button-save popup__button-save_profile" type="submit" aria-label="Save">Сохранить</button>
-            </>
-          }        
-        />
+    
         
     <PopupImage
         card={selectedCard}

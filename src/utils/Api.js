@@ -25,8 +25,10 @@
                 method: 'POST',
                 headers: this.headers,
                 body: JSON.stringify({
-                        name: item.title,
-                        link: item.url
+                        /* name: item.title,
+                        link: item.url */
+                        name: item.name,
+                        link: item.link
                     })
         })
         .then(res => {
@@ -99,13 +101,13 @@
 
     //метод изменение аватарки
     changeAvatar(avatarItem) {
-        console.log(avatarItem);
+        //console.log(avatarItem);
         return fetch(`${this.baseUrl}/users/me/avatar`,
             {
                 method: "PATCH",
                 headers: this.headers,
                 body: JSON.stringify({
-                    avatar: avatarItem.url
+                    avatar: avatarItem.avatar
                 })
             })
             .then(res => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PopupWidthForm({name, isOpen, isClose, method, nameForm, title, children, onSubmit}) {
+function PopupWidthForm({name, isOpen, isClose, method, nameForm, title, children, onSubmit,}) {
     return (
     <div 
       className={`popup popup_${name} ${isOpen && 'popup_opened'}`}>
