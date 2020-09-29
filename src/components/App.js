@@ -27,7 +27,7 @@ function App() {
     setAddCard(true)
   }
 
-  const [selectedCard, setSelectCardClick] = React.useState('')
+  const [selectedCard, setSelectCardClick] = React.useState(null)
   function handleCardClick(card) {
     setSelectCardClick(card)
   }
@@ -36,7 +36,7 @@ function App() {
     setEditProfile(false)
     setEditAvatar(false)
     setAddCard(false)
-    handleCardClick('')
+    handleCardClick(null)
   }
 
   function closeEscapePopup(event) {
@@ -100,12 +100,12 @@ function App() {
     }
   }
 
-  //происходит ошибка рендеринга. удаляеются все карточки, кроме удаляемой карточки 
+  
   function handleCardDelete(card) {
       apiData.deleteCard(card._id)
         .then(() => {
-          const NewCards = cards.filter((c) => c._id !== card._id );          
-          setCards(NewCards);
+          const newCards = cards.filter((c) => c._id !== card._id );          
+          setCards(newCards);
         })
         .catch((error) => {
           console.log(error);

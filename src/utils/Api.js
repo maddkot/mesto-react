@@ -14,7 +14,7 @@
                 if (res.ok) {
                     return res.json();
                 }
-                return Promise.reject(`Allert: ${res.status}`);
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
             });           
     }
 
@@ -35,7 +35,7 @@
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(`Allert: ${res.status}`);
+            return Promise.reject(new Error(`Ошибка: ${res.status}`));
         });           
     }
 
@@ -50,7 +50,7 @@
             if (res.ok) {
                 return res.json();
             }
-            return Promise.reject(`Allert: ${res.status}`);
+            return Promise.reject(new Error(`Ошибка: ${res.status}`));
         });
     }
 
@@ -66,7 +66,7 @@
                 if (res.ok) {
                     return res.json();
                 }
-                return Promise.reject(`Allert: ${res.status}`);
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
             });
     }
 
@@ -81,7 +81,7 @@
                 if (res.ok) {
                     return res.json();
                 }
-                return Promise.reject(`Allert: ${res.status}`);
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
             });
     }
 
@@ -95,7 +95,7 @@
                 if (res.ok) {
                     return res.json();
                 }
-                return Promise.reject(`Allert: ${res.status}`);
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
         })
     }
 
@@ -114,7 +114,7 @@
                 if (res.ok) {
                     return res.json();
                 }
-                return Promise.reject(`Allert: ${res.status}`);
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
             });
     }
 
@@ -135,7 +135,7 @@
                     if (res.ok) {
                         return res.json();
                         }
-                    return Promise.reject(`Allert: ${res.status}`);
+                        return Promise.reject(new Error(`Ошибка: ${res.status}`));
             })
     }
 
