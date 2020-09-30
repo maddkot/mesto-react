@@ -1,15 +1,15 @@
-#**Проект Mesto (React Create App)**
+# Проект Mesto (React Create App)
 
 ------------------------------------
 
 **Ссылка на  проект**
 
-[Ссылка на проект Mesto](https://maddkot.github.io/mesto-react/ "https://maddkot.github.io/mesto-react/")
+[Gроект Mesto](https://maddkot.github.io/mesto-react/ "https://maddkot.github.io/mesto-react/")
 
 ------------------------------------
 
-####**Описание проекта**
+#### Описание проекта
 
-Сайт, созданный в рамках обучения веб-разработке в компании Яндекс.Практикум. 
-Данный проект разработан с использованием CRA (Create React App). 
+Сайт, созданный в рамках обучения веб-разработке в компании Яндекс.Практикум.
+Данный проект разработан с использованием CRA (Create React App).
 Оригинальную версию проекта на чистом JS можно посмотреть [тут](https://github.com/maddkot/mesto). 
